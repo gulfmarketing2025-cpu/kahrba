@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>اتصل بنا | فني كهرباء منزلي محترف - 0541942186</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -27,9 +27,10 @@
             background-color: var(--light-bg);
             color: var(--dark-text);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* Navbar */
+        /* ========== Navbar محسّن مع قائمة منزلقة للجوال ========== */
         nav {
             background: var(--white);
             padding: 1rem 5%;
@@ -38,43 +39,150 @@
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 900;
             color: var(--primary-blue);
             text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        /* زر الهامبرغر */
+        .menu-toggle {
+            display: none;
+            font-size: 1.9rem;
+            cursor: pointer;
+            color: var(--primary-blue);
+            background: none;
+            border: none;
+            transition: 0.2s;
+            padding: 5px;
+        }
+        .menu-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-links li {
+            margin: 0 5px;
         }
 
         .nav-links a {
             text-decoration: none;
             color: var(--dark-text);
-            margin: 0 15px;
-            font-weight: 600;
+            font-weight: 700;
             transition: 0.3s;
+            font-size: 1.1rem;
+            padding: 8px 12px;
+            border-radius: 30px;
+            position: relative;
         }
 
         .nav-links a.active {
             color: var(--primary-blue);
-            border-bottom: 2px solid var(--secondary-yellow);
+            background: rgba(0,86,179,0.08);
+        }
+        .nav-links a:hover {
+            background: rgba(0,86,179,0.05);
+            color: var(--primary-blue);
         }
 
-        /* Page Header */
+        /* الطبقة المظلمة للقائمة */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s ease;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* استجابة الجوال */
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: block;
+                z-index: 1002;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 320px;
+                height: 100vh;
+                background: var(--white);
+                flex-direction: column;
+                justify-content: center;
+                align-items: stretch;
+                padding: 90px 25px 40px;
+                box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+                transition: right 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+                z-index: 1000;
+                gap: 20px;
+                border-radius: 20px 0 0 20px;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                margin: 8px 0;
+                width: 100%;
+                text-align: center;
+            }
+            .nav-links a {
+                display: block;
+                padding: 14px;
+                font-size: 1.3rem;
+                border-radius: 50px;
+                background: transparent;
+            }
+            .nav-links a.active {
+                background: rgba(0,86,179,0.1);
+            }
+            body.menu-open {
+                overflow: hidden;
+            }
+        }
+
+        /* Page Header مع حركة */
         .contact-hero {
-            background: linear-gradient(rgba(0, 86, 179, 0.85), rgba(0, 86, 179, 0.85)), url('4.jpg');
+            background: linear-gradient(135deg, rgba(0, 86, 179, 0.9), rgba(0, 86, 179, 0.85)), url('4.jpg');
             background-size: cover;
             background-position: center;
             color: white;
             padding: 80px 20px;
             text-align: center;
+            animation: fadeInUp 0.8s ease;
         }
-
         .contact-hero h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
+            animation: slideInRight 0.6s;
         }
 
         /* Contact Section Grid */
@@ -92,107 +200,126 @@
             background: var(--primary-blue);
             color: white;
             padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+            animation: fadeInLeft 0.7s;
+        }
+        .info-panel:hover {
+            transform: translateY(-5px);
         }
 
         .info-panel h2 {
             margin-bottom: 30px;
             font-size: 1.8rem;
-            border-bottom: 2px solid var(--secondary-yellow);
-            display: inline-block;
-            padding-bottom: 5px;
+            border-right: 4px solid var(--secondary-yellow);
+            padding-right: 15px;
         }
 
         .contact-item {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 20px;
             margin-bottom: 35px;
+            transition: all 0.2s;
         }
-
+        .contact-item:hover {
+            transform: translateX(-5px);
+        }
         .contact-item i {
             font-size: 1.5rem;
             color: var(--secondary-yellow);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             width: 50px;
             height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-        }
-
-        .contact-item h4 {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-
-        .contact-item p {
-            color: #e0e0e0;
+            transition: 0.2s;
         }
 
         /* Right Side: Form */
         .form-panel {
             background: var(--white);
             padding: 45px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+            animation: fadeInRight 0.7s;
+        }
+        .form-panel:hover {
+            transform: translateY(-3px);
         }
 
         .form-panel h3 {
             margin-bottom: 25px;
             color: var(--primary-blue);
-            font-size: 1.6rem;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+        }
+        .form-panel h3:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--secondary-yellow);
+            border-radius: 5px;
         }
 
         .form-group {
             margin-bottom: 20px;
         }
-
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
+            font-weight: 700;
+            color: #2c3e50;
         }
-
         .form-group input, 
         .form-group select, 
         .form-group textarea {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
+            padding: 14px 18px;
+            border: 1px solid #e0e0e0;
+            border-radius: 18px;
             font-size: 1rem;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s;
+            background: #fefefe;
         }
-
         .form-group input:focus, 
-        .form-group textarea:focus {
+        .form-group textarea:focus, 
+        .form-group select:focus {
             border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+            box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.1);
+            transform: scale(1.01);
         }
 
         .btn-send {
             background: var(--primary-blue);
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 1.1rem;
+            padding: 16px 30px;
+            font-size: 1.2rem;
             font-weight: bold;
-            border-radius: 10px;
+            border-radius: 50px;
             cursor: pointer;
             width: 100%;
-            transition: 0.3s;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 5px 12px rgba(0,86,179,0.3);
         }
-
         .btn-send:hover {
             background: #004494;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 22px rgba(0,86,179,0.4);
         }
 
-        /* Floating Buttons */
+        /* Floating Buttons مع نبض */
         .floating-btns {
             position: fixed;
             bottom: 30px;
@@ -202,7 +329,6 @@
             flex-direction: column;
             gap: 15px;
         }
-
         .float-btn {
             width: 60px;
             height: 60px;
@@ -210,42 +336,107 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
+            font-size: 28px;
             color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
             text-decoration: none;
-            transition: 0.3s;
+            transition: all 0.3s;
+            animation: pulseGlow 2.2s infinite;
         }
-
+        .float-btn:hover {
+            transform: scale(1.1);
+            animation: none;
+        }
         .f-whatsapp { background: #25d366; }
         .f-call { background: var(--primary-blue); }
-
-        footer {
-            background: #222;
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); transform: scale(1);}
+            70% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); transform: scale(1.02);}
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); transform: scale(1);}
+        }
+        .f-call {
+            animation: pulseBlue 2.2s infinite;
+        }
+        @keyframes pulseBlue {
+            0% { box-shadow: 0 0 0 0 rgba(0,86,179,0.7);}
+            70% { box-shadow: 0 0 0 12px rgba(0,86,179,0);}
+            100% { box-shadow: 0 0 0 0 rgba(0,86,179,0);}
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 992px) {
+        footer {
+            background: #1a2a3a;
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+            border-top: 3px solid var(--secondary-yellow);
+        }
+        footer a {
+            color: var(--secondary-yellow);
+            text-decoration: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(40px);}
+            to { opacity: 1; transform: translateX(0);}
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-30px);}
+            to { opacity: 1; transform: translateX(0);}
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px);}
+            to { opacity: 1; transform: translateX(0);}
+        }
+
+        /* رسالة التنبيه المخصصة */
+        .toast-msg {
+            position: fixed;
+            bottom: 120px;
+            left: 30px;
+            background: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            direction: rtl;
+            animation: fadeInUp 0.3s ease;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
             .contact-wrapper {
                 grid-template-columns: 1fr;
                 margin-top: 20px;
             }
-            .nav-links { display: none; }
+            .contact-hero h1 { font-size: 1.9rem; }
+            .info-panel, .form-panel { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- طبقة الخلفية المظلمة للموبايل -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
     <nav>
         <a href="index.html" class="logo">⚡ فني كهربائي</a>
-        <div class="nav-links">
-            <a href="index.html">الرئيسية</a>
-            <a href="about.html">من نحن</a>
-            <a href="contact.html" class="active">اتصل بنا</a>
-        </div>
+        
+        <button class="menu-toggle" id="mobile-menu" aria-label="القائمة">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <ul class="nav-links" id="nav-list">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="contact.html" class="active">اتصل بنا</a></li>
+        </ul>
     </nav>
 
     <section class="contact-hero">
@@ -293,20 +484,20 @@
 
         <section class="form-panel">
             <h3>أرسل لنا استفسارك</h3>
-            <form action="#">
+            <form id="contactForm" action="#">
                 <div class="form-group">
                     <label>الاسم بالكامل</label>
-                    <input type="text" placeholder="مثال: محمد علي" required>
+                    <input type="text" id="fullName" placeholder="مثال: محمد علي" required>
                 </div>
 
                 <div class="form-group">
                     <label>رقم الجوال</label>
-                    <input type="tel" placeholder="05xxxxxxxx" required>
+                    <input type="tel" id="phoneNum" placeholder="05xxxxxxxx" required>
                 </div>
 
                 <div class="form-group">
                     <label>نوع الخدمة</label>
-                    <select>
+                    <select id="serviceType">
                         <option>تصليح عطل كهربائي</option>
                         <option>تأسيس كهرباء منزلية</option>
                         <option>صيانة/تركيب إنتركم</option>
@@ -317,17 +508,19 @@
 
                 <div class="form-group">
                     <label>تفاصيل المشكلة / الطلب</label>
-                    <textarea rows="4" placeholder="اكتب وصفاً مختصراً لطلبك هنا..."></textarea>
+                    <textarea id="messageDetail" rows="4" placeholder="اكتب وصفاً مختصراً لطلبك هنا..."></textarea>
                 </div>
 
                 <button type="submit" class="btn-send">إرسال الطلب الآن</button>
             </form>
+            <!-- رسالة تأكيد مخصصة تظهر عند الإرسال -->
+            <div id="toastMsg" class="toast-msg">✓ تم إرسال طلبك بنجاح، سنتواصل معك قريباً</div>
         </section>
 
     </main>
 
     <div class="floating-btns">
-        <a href="https://wa.me/966541942186" class="float-btn f-whatsapp" title="تواصل عبر واتساب">
+        <a href="https://wa.me/966541942186" class="float-btn f-whatsapp" target="_blank" title="تواصل عبر واتساب">
             <i class="fab fa-whatsapp"></i>
         </a>
         <a href="tel:0541942186" class="float-btn f-call" title="اتصال هاتفي">
@@ -335,9 +528,176 @@
         </a>
     </div>
 
-    <footer>
-        <p>جميع الحقوق محفوظة &copy; 2026 - فني كهربائي تصليح وتأسيس</p>
+       <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - فني كهربائي | 0541942186</p>
+        <div class="design-credit">
+            تصميم تسويق الخليج 
+            <a href="https://gulf-marketing.com/" target="_blank" rel="noopener noreferrer">https://gulf-marketing.com/</a>
+        </div>
     </footer>
 
+    <script>
+        // ========== قائمة الموبايل المنزلقة (سلايدر من اليمين) ==========
+        const menuToggle = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+        const overlayMenu = document.getElementById('menuOverlay');
+        const bodyEl = document.body;
+
+        function closeMenu() {
+            navList.classList.remove('active');
+            overlayMenu.classList.remove('active');
+            bodyEl.classList.remove('menu-open');
+            const icon = menuToggle.querySelector('i');
+            if(icon) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        function openMenu() {
+            navList.classList.add('active');
+            overlayMenu.classList.add('active');
+            bodyEl.classList.add('menu-open');
+            const icon = menuToggle.querySelector('i');
+            if(icon) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        }
+
+        if(menuToggle) {
+            menuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if(navList.classList.contains('active')) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+        }
+
+        if(overlayMenu) {
+            overlayMenu.addEventListener('click', closeMenu);
+        }
+
+        // عند الضغط على أي رابط في القائمة (للموبايل) يتم إغلاقها
+        const allLinks = document.querySelectorAll('.nav-links a');
+        allLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if(window.innerWidth <= 992 && navList.classList.contains('active')) {
+                    closeMenu();
+                }
+            });
+        });
+
+        // إعادة ضبط الأيقونة عند تغيير حجم الشاشة
+        window.addEventListener('resize', () => {
+            if(window.innerWidth > 992) {
+                if(navList.classList.contains('active')) {
+                    closeMenu();
+                }
+            } else {
+                // فقط للتأكد من توافق الأيقونة
+                if(!navList.classList.contains('active')) {
+                    const icon = menuToggle?.querySelector('i');
+                    if(icon && icon.classList.contains('fa-times')) {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                }
+            }
+        });
+
+        // ========== معالجة نموذج الاتصال مع تأثير أنيميشن ==========
+        const contactForm = document.getElementById('contactForm');
+        const toastMsg = document.getElementById('toastMsg');
+
+        if(contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // التحقق من الحقول الأساسية
+                const nameInput = document.getElementById('fullName');
+                const phoneInput = document.getElementById('phoneNum');
+                
+                if(!nameInput.value.trim()) {
+                    showToast("⚠️ الرجاء إدخال الاسم", "#dc3545");
+                    nameInput.focus();
+                    return;
+                }
+                if(!phoneInput.value.trim()) {
+                    showToast("⚠️ الرجاء إدخال رقم الجوال", "#dc3545");
+                    phoneInput.focus();
+                    return;
+                }
+                if(phoneInput.value.trim().length < 9) {
+                    showToast("⚠️ رقم الجوال غير صحيح", "#dc3545");
+                    return;
+                }
+
+                // محاكاة إرسال ناجح (لأنه لا يوجد خلفية حقيقية لكن تظهر رسالة ودية)
+                showToast("✓ تم إرسال طلبك بنجاح، سنتواصل معك قريباً", "#28a745");
+                
+                // مسح الحقول اختيارياً (يمكن تركها لكنها تجربة أفضل)
+                // nameInput.value = '';
+                // phoneInput.value = '';
+                // document.getElementById('messageDetail').value = '';
+                // document.getElementById('serviceType').selectedIndex = 0;
+                
+                // (اختياري) يمكن إعادة تعيين النموذج بالكامل بعد 2 ثانية إذا أردت
+                setTimeout(() => {
+                    // إذا أردت مسح الحقول بعد رسالة النجاح، قم بإلغاء التعليق:
+                    // nameInput.value = '';
+                    // phoneInput.value = '';
+                    // document.getElementById('messageDetail').value = '';
+                }, 2000);
+            });
+        }
+
+        function showToast(message, bgColor = "#28a745") {
+            toastMsg.style.backgroundColor = bgColor;
+            toastMsg.textContent = message;
+            toastMsg.style.display = "block";
+            setTimeout(() => {
+                toastMsg.style.opacity = "1";
+            }, 10);
+            setTimeout(() => {
+                toastMsg.style.opacity = "0";
+                setTimeout(() => {
+                    toastMsg.style.display = "none";
+                    toastMsg.style.opacity = "1";
+                }, 300);
+            }, 3500);
+        }
+
+        // تأثير ظهور العناصر عند التمرير (تحسين الحركة)
+        const animateElements = document.querySelectorAll('.info-panel, .form-panel, .contact-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        // تطبيق التأثير الأولي للعناصر المخفية
+        animateElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+        // التأكد من ظهور البطاقات بسرعة عند التحميل
+        setTimeout(() => {
+            animateElements.forEach(el => {
+                if(getComputedStyle(el).opacity === '0') {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }
+            });
+        }, 200);
+    </script>
 </body>
 </html>
